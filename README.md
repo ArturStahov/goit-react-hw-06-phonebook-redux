@@ -1,10 +1,6 @@
-React base template
+## Refactoring Phone Book
 
-add^
-
-- styled-component; npm install --save styled-components
-- prop-types; npm install --save prop-types
-- git-page; npm install --save gh-pages
-- husky, lintstaged, prettier; npm install --save-dev prettier husky lint-staged
-- base css;
-- css normalize
+- Add Redux
+- Add redux-toolkit
+- add react-redux
+- add react-Persist

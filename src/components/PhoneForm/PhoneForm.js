@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
-import { error } from '@pnotify/core';
-import '@pnotify/core/dist/PNotify.css';
-import '@pnotify/core/dist/BrightTheme.css';
-import '@pnotify/confirm/dist/PNotifyConfirm.css';
-import { connect } from 'react-redux';
-import { addItem } from '../../redux/contacts/contacts-action';
 import { Form, FormLabel, Button } from './StyledComponents';
+import {
+  errorBadValueNumber,
+  errorContactPresent,
+} from '../../Notification/ErrorNotification';
 
 function PhoneForm({ AddContact, contacts }) {
   const [nameValue, setNameValue] = useState('');
@@ -49,22 +47,6 @@ function PhoneForm({ AddContact, contacts }) {
     setNumberValue('');
   };
 
-  const errorBadValueNumber = () => {
-    return error({
-      title: 'Hi!',
-      text:
-        'BAD value phone-number!!! You must enter phone-number correct format',
-      delay: 3000,
-    });
-  };
-  const errorContactPresent = () => {
-    return error({
-      title: 'Hi!',
-      text: 'This contact is present in phone-book!',
-      delay: 3000,
-    });
-  };
-
   return (
     <Form onSubmit={handlerFormSubmit}>
       <FormLabel>
@@ -95,16 +77,4 @@ function PhoneForm({ AddContact, contacts }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    contacts: state.contacts.items,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    AddContact: (name, number) => dispatch(addItem(name, number)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PhoneForm);
+export default PhoneForm;

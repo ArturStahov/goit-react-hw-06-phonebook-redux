@@ -1,45 +1,50 @@
-import { createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import actionTypes from './contacts/contacts-type';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
+import storage from 'redux-persist/lib/storage';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import contactsReducer from './contacts/contact-reducer';
 
-const itemsReducer = (state = [], { type, payload }) => {
-  switch (type) {
-    case actionTypes.ADD_CONTACTS:
-      return [...state, payload];
-    case actionTypes.DELETE_CONTACTS:
-      return state.filter(item => item.id !== payload);
-
-    default:
-      return state;
-  }
+const persistConfig = {
+  key: 'save-contacts',
+  storage,
+  blacklist: ['filter'],
 };
 
-const filterReducer = (state = '', { type, payload }) => {
-  switch (type) {
-    case actionTypes.CHANGE_FILTER:
-      return payload;
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+  logger,
+];
 
-    default:
-      return state;
-  }
-};
-
-const contactsReducer = combineReducers({
-  items: itemsReducer,
-  filter: filterReducer,
+const store = configureStore({
+  reducer: {
+    contacts: persistReducer(persistConfig, contactsReducer),
+  },
+  devTools: process.env.NODE_ENV === 'development',
+  middleware,
 });
 
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-});
+const persistor = persistStore(store);
 
-const store = createStore(rootReducer, composeWithDevTools());
+export default { store, persistor };
 
-export default store;
-
-// {
-//     contacts: {
-//         items: [],
-//             filter: ''
-//     }
-// }
+/** state template
+ * {
+ *   contacts: {
+ *       items: [],
+ *           filter: ''
+ *   }
+ * }
+ */

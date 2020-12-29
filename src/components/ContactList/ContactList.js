@@ -1,7 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { deleteItem } from '../../redux/contacts/contacts-action';
+
 import {
   TaskList,
   TaskItem,
@@ -25,23 +23,9 @@ function ContactList({ visibleContacts, onDeleteContact }) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    visibleContacts: state.contacts.items.filter(item =>
-      item.name.toLowerCase().includes(state.contacts.filter.toLowerCase()),
-    ),
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onDeleteContact: id => dispatch(deleteItem(id)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default ContactList;
 
 ContactList.propTypes = {
-  items: PropTypes.array.isRequired,
+  visibleContacts: PropTypes.array.isRequired,
   onDeleteContact: PropTypes.func,
 };
