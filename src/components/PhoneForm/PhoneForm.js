@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
+import { useSelector, useDispatch } from 'react-redux';
 import { Form, FormLabel, Button } from './StyledComponents';
 import {
   errorBadValueNumber,
   errorContactPresent,
 } from '../../Notification/ErrorNotification';
+import { itemsArray } from '../ContactList/contactList-selector';
+import { addItem } from '../../redux/contacts/contacts-action';
 
-function PhoneForm({ AddContact, contacts }) {
+export default function PhoneForm() {
   const [nameValue, setNameValue] = useState('');
   const [numberValue, setNumberValue] = useState('');
+
+  const contacts = useSelector(itemsArray);
+  const dispatch = useDispatch();
 
   const handlerInput = e => {
     const { name, value } = e.target;
@@ -41,7 +47,7 @@ function PhoneForm({ AddContact, contacts }) {
       return;
     }
 
-    AddContact(nameValue, numberValue);
+    dispatch(addItem(nameValue, numberValue));
 
     setNameValue('');
     setNumberValue('');
@@ -76,5 +82,3 @@ function PhoneForm({ AddContact, contacts }) {
     </Form>
   );
 }
-
-export default PhoneForm;

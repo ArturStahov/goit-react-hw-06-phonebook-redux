@@ -1,1 +1,1 @@
-export { default } from './FilterContacts.container';
+export { default } from './FilterContacts';

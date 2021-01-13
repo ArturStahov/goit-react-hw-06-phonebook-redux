@@ -1,1 +1,1 @@
-export { default } from './PhoneForm.container.js';
+export { default } from './PhoneForm';
